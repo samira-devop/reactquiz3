@@ -5,6 +5,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 export const HomePage = () => {
 
+    
+
+
     const myQueryClient = new QueryClient();
 
     return (

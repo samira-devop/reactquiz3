@@ -10,8 +10,13 @@ export const TodoList = () => {
   const refInput = useRef("");
   const navigate = useNavigate();
   
+  
   // Set up the proper usage of useQuery hook
-  const usersQuery = useQuery();
+
+  const usersQuery = useQuery(`users/`, async () => await axios.get(url), {
+    refetchOnWindowFocus: false,
+    enabled: false
+  })
 
   useEffect(() => {
     // Load todos (if any) from localStorage
@@ -22,12 +27,22 @@ export const TodoList = () => {
 
   useEffect(() => {
     // Save todos to localStorage
-    
-  }, [todos]);
+    if(usersQuery.isFetched && friends ==="")
+    setTodos(usersQuery.data.data.todos)
+    setFriends(usersQuery.data.data.friends)
+  }, [todos,
+      setTodos,
+      setFriends,
+      usersQuery.isFetched,
+      usersQuery.data.data.todos,
+      usersQuery.data.data.friends
+
+    ]);
 
   const handleAddTodo = () => {
       // access the input and update the state variable "todos"
-  };
+    usersQuery.refetch()
+    };
 
 
   const handleFetchFriends = async () => {
@@ -35,22 +50,22 @@ export const TodoList = () => {
     await usersQuery.refetch();
     
     // extract data into a new array and extract only the names from this array of objects
-    
+    setFriends(data.friends)
     
     //setFriends(friendsNamesArray);
   }
 
   const handleDeleteTodo = (index) => {
     // filter out the todo that was deleted from the array - hint: keep the rest of the todos in an array
-
+  setTodos(data.todos)
     // update todos array
   };
   
   const handleLogout = () => {
     // Clear token from localStorage
-    
+    localStorage.setItem(todos, JSON.stringify(friends))
     // route user back to sign in page
-    
+    const p = JSON.parse(localStorage.getItem(todos))
   };
 
   return (
@@ -62,6 +77,13 @@ export const TodoList = () => {
       <h3>To do:</h3>
       <ul id="todo-list">
         {/* Use map to return the todos here :) */}
+        {todos?.map((todos, index) => {
+          return(
+            <li key={index}>
+              {todos}
+            </li>
+          )
+        })}
       </ul>
       <button id="get-friends-btn" onClick={handleFetchFriends}>Get friends list</button>
       <h3>Your active friends: </h3>

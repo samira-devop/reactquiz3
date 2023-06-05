@@ -9,8 +9,9 @@ export const SignIn = () => {
 
   const handleLogin = async () => {
     // Store token in localStorage
-    
+    localStorage.setItem(username, JSON.stringigy(username))
     // Navigate user to home page
+    usenavigate ()
   };
 
   return (
